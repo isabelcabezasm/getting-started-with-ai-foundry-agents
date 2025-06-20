@@ -2,6 +2,11 @@
 This is the simplest example of using the Azure AI Agent service to create an agent, send a message, and receive a response.
 It demonstrates how to create an agent, send a message, and process the response using the Azure AI Agent service.
 It also shows how to clean up by deleting the agent and thread after use.
+
+You need the environment variables set in your .env file for this example to work:
+AZURE_AI_AGENT_ENDPOINT
+AZURE_AI_AGENT_MODEL_DEPLOYMENT_NAME
+
 """
 
 # # Azure AI Agent service SDK reference:
@@ -27,7 +32,7 @@ agent_client = AgentsClient(
 #### Create an agent
 agent = agent_client.create_agent(
     model=model_deployment_name,
-    name="Assistant 1",
+    name="Simplest Assistant ever",
     instructions="Answer the user's questions.",
 )
 
