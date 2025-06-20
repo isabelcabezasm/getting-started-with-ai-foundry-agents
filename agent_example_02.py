@@ -52,18 +52,19 @@ agent_client = AgentsClient(
 
 # Initialize project client
 # Here I need the project client to access the connections and retrieve the Bing connection.
-project_client = AIProjectClient(endpoint=endpoint, 
+project_client = AIProjectClient(endpoint=endpoint,
                                  credential=DefaultAzureCredential()
-                                )
+                                 )
 
 # Get Bing connection ID
 bing_connection = project_client.connections.get(name=bing_connection_name)
 
 # Initialize agent bing custom search tool
-bing_grounding = BingCustomSearchTool(connection_id=bing_connection.id, instance_name=bing_config_name)
+bing_grounding = BingCustomSearchTool(
+    connection_id=bing_connection.id, instance_name=bing_config_name)
 
 
-#### Create an agent
+# Create an agent
 bing_agent = agent_client.create_agent(
     model=model_deployment_name,
     name="Assistant that can search in Bing.",
@@ -76,11 +77,11 @@ print(f"Bing Agent created with ID: {bing_agent.id}")
 
 
 # Create the tool for the connected agent
-agent_tool = ConnectedAgentTool(id=bing_agent.id, name="bing_agent", description="Call this agent when you need to find information on the web.")
+agent_tool = ConnectedAgentTool(id=bing_agent.id, name="bing_agent",
+                                description="Call this agent when you need to find information on the web.")
 
 
-
-### Create another agent connected with the previous one.
+# Create another agent connected with the previous one.
 orchestrator_agent = agent_client.create_agent(
     model=model_deployment_name,
     name="Orchestrator Agent",
@@ -90,8 +91,7 @@ orchestrator_agent = agent_client.create_agent(
 print(f"Orchestrator Agent created with ID: {bing_agent.id}")
 
 
-
-#### Let's speak with the Orchestrator agent.
+# Let's speak with the Orchestrator agent.
 
 # Create a thread
 thread = agent_client.threads.create()
@@ -99,38 +99,43 @@ print(f"Created thread, thread ID: {thread.id}")
 
 # Create a message
 message = agent_client.messages.create(
-            thread_id=thread.id,
-            role="user",
-            content="Can you provide the latest announcements about AI Foundry agents from the Build Conference 2025?",
-        )
+    thread_id=thread.id,
+    role="user",
+    content="Can you provide the latest announcements about AI Foundry agents from the Build Conference 2025?",
+)
 print(f"Created message, message ID: {message.id}")
 
 # run/send the message to the agent
-run = agent_client.runs.create_and_process(thread_id=thread.id, agent_id=orchestrator_agent.id)
+run = agent_client.runs.create_and_process(
+    thread_id=thread.id, agent_id=orchestrator_agent.id)
 print(f"Run finished with status: {run.status}")
 
 if run.status == "failed":
     print(f"Run failed: {run.last_error}")
 
-else:    
-    # Get the response from the agent    
-    response = agent_client.messages.list(thread_id=thread.id, run_id=run.id) # get all the messages in the thread
+else:
+    # Get the response from the agent
+    # get all the messages in the thread
+    response = agent_client.messages.list(thread_id=thread.id, run_id=run.id)
     for msg in response:
         if msg.role == "assistant":
             print(f"Agent response: {msg.content}")
-           
-            print("\nTool calls made by the agent:")  
-            # update the thread to access tool calls
-            thread = agent_client.threads.get(thread.id)  # Get the thread to access tool calls          
-            print(f"Thread tool calls: {thread.metadata}")  # Print the tool calls made by the agent
-            
-            # update the run to access tool calls
-            run = agent_client.runs.get(run_id=run.id, thread_id=thread.id)  # Get the run to access tool calls
-            print(f"Run tool used: {run.tools[0]["connected_agent"]}")  # Print the tool calls made by the agent in the run
 
-   
-    
-### Cleanup: Delete the agents and the thread.
+            print("\nTool calls made by the agent:")
+            # update the thread to access tool calls
+            # Get the thread to access tool calls
+            thread = agent_client.threads.get(thread.id)
+            # Print the tool calls made by the agent
+            print(f"Thread tool calls: {thread.metadata}")
+
+            # update the run to access tool calls
+            # Get the run to access tool calls
+            run = agent_client.runs.get(run_id=run.id, thread_id=thread.id)
+            # Print the tool calls made by the agent in the run
+            print(f"Run tool used: {run.tools[0]["connected_agent"]}")
+
+
+# Cleanup: Delete the agents and the thread.
 
 agent_client.threads.delete(thread.id)
 print(f"Deleted thread with ID: {thread.id}")

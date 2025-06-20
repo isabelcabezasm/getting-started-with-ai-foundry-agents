@@ -44,18 +44,19 @@ agent_client = AgentsClient(
 
 # Initialize project client
 # Here I need the project client to access the connections and retrieve the Bing connection.
-project_client = AIProjectClient(endpoint=endpoint, 
+project_client = AIProjectClient(endpoint=endpoint,
                                  credential=DefaultAzureCredential()
-                                )
+                                 )
 
 # Get Bing connection ID
 bing_connection = project_client.connections.get(name=bing_connection_name)
 
 # Initialize agent bing custom search tool
-bing_grounding = BingCustomSearchTool(connection_id=bing_connection.id, instance_name=bing_config_name)
+bing_grounding = BingCustomSearchTool(
+    connection_id=bing_connection.id, instance_name=bing_config_name)
 
 
-#### Create an agent
+# Create an agent
 agent = agent_client.create_agent(
     model=model_deployment_name,
     name="Assistant that can search in Bing.",
@@ -68,7 +69,7 @@ print(f"Agent created with ID: {agent.id}")
 
 # The Agent (with its knowledge tool) appears in the Azure AI Foundry portal under Agents.
 
-#### Let's speak with the agent.
+# Let's speak with the agent.
 
 # Create a thread
 thread = agent_client.threads.create()
@@ -76,29 +77,30 @@ print(f"Created thread, thread ID: {thread.id}")
 
 # Create a message
 message = agent_client.messages.create(
-            thread_id=thread.id,
-            role="user",
-            content="Can you provide the latest announcements about AI Foundry agents from the Build Conference 2025?",
-        )
+    thread_id=thread.id,
+    role="user",
+    content="Can you provide the latest announcements about AI Foundry agents from the Build Conference 2025?",
+)
 print(f"Created message, message ID: {message.id}")
 
 # run/send the message to the agent
-run = agent_client.runs.create_and_process(thread_id=thread.id, agent_id=agent.id)
+run = agent_client.runs.create_and_process(
+    thread_id=thread.id, agent_id=agent.id)
 print(f"Run finished with status: {run.status}")
 
 if run.status == "failed":
     print(f"Run failed: {run.last_error}")
 else:
-    
-    # Get the response from the agent    
-    response = agent_client.messages.list(thread_id=thread.id, run_id=run.id) # get all the messages in the thread
+
+    # Get the response from the agent
+    # get all the messages in the thread
+    response = agent_client.messages.list(thread_id=thread.id, run_id=run.id)
     for msg in response:
         if msg.role == "assistant":
             print(f"Agent response: {msg.content}")
-     
-    
-    
-### Cleanup: Delete the agent and the thread.
+
+
+# Cleanup: Delete the agent and the thread.
 
 agent_client.threads.delete(thread.id)
 print(f"Deleted thread with ID: {thread.id}")

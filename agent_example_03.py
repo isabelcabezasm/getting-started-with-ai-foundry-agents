@@ -31,35 +31,35 @@ USER_INPUTS = [
     "What is my name?",
 ]
 
+
 async def main() -> None:
 
     ai_agent_settings = AzureAIAgentSettings()
 
-    agent_client = AzureAIAgent.create_client(credential=DefaultAzureCredential(), 
-                                            endpoint=ai_agent_settings.endpoint)
+    agent_client = AzureAIAgent.create_client(credential=DefaultAzureCredential(),
+                                              endpoint=ai_agent_settings.endpoint)
 
     # 1. Create an agent on the Azure AI agent service
     agent_definition = await agent_client.agents.create_agent(
-                            model=AzureAIAgentSettings().model_deployment_name,
-                            name="Semantic_Kernel_Assistant",
-                            instructions="Answer the user's questions.",
-                    )
-            
+        model=AzureAIAgentSettings().model_deployment_name,
+        name="Semantic_Kernel_Assistant",
+        instructions="Answer the user's questions.",
+    )
+
     # 2. Create a Semantic Kernel agent for the Azure AI agent
     agent = AzureAIAgent(
-                client=agent_client,
-                definition=agent_definition,
-            )
+        client=agent_client,
+        definition=agent_definition,
+    )
 
     # # Let's speak with the agent:
 
     # 3. Create a thread for the agent
     thread: AzureAIAgentThread = None
 
-
     for user_input in USER_INPUTS:
         print(f"# User: {user_input}")
-        
+
         # 4. Invoke the agent with the specified message for response
         response = await agent.get_response(messages=user_input, thread=thread)
         print(f"# {response.name}: {response}")
@@ -72,4 +72,3 @@ async def main() -> None:
 
 if __name__ == "__main__":
     asyncio.run(main())
-
