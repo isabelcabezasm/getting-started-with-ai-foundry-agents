@@ -24,7 +24,7 @@ or
 The endpoint can be found in the Azure Foundry portal
 The format is : https://<resource>.services.ai.azure.com/api/projects/<project-name>.
 
-For the example 01 you will need to create a "Grounding with Bing Custom Search" resource, and add a connection to that service in the AI Foundry project.
+For the example 01 and 02 you will need to create a "Grounding with Bing Custom Search" resource, and add a connection to that service in the AI Foundry project.
 
 
 4. **Run or debug your agent:**    
