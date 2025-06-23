@@ -40,6 +40,8 @@ For the example 01 and 02 you will need to create a "Grounding with Bing Custom 
 - Example 2: Example of using the Azure AI Agent service to create two connected agents. One of the agents has a knowledge tool (Bing Custom Search). The other agent is an orchestrator that can call the first agent.
 - Example 3: Create a Semantic Kernel agent that interacts with the Azure AI Foundry Agent service.
 - Example 4: Semantic Kernel agent with a SK plugin used by the agent. The agent uses Azure AI Foundry Agent service to generate the answer and access to the plugin. 
+- Example 5: Creates a Semantic Kernel `Group Chat Orchestration` where two agents chat. We are defining a Termination Strategy (when one of the agents approves the work of the other one), and a `callback` function to log the conversation.
+
 
 ## Contributing
 
