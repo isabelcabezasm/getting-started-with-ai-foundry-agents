@@ -39,6 +39,7 @@ For the example 01 and 02 you will need to create a "Grounding with Bing Custom 
 - Example 1: Example of using the Azure AI Agent service to create an agent, and add a knowledge tool (Bing Custom Search) to it. Send a message, and receive a response.
 - Example 2: Example of using the Azure AI Agent service to create two connected agents. One of the agents has a knowledge tool (Bing Custom Search). The other agent is an orchestrator that can call the first agent.
 - Example 3: Create a Semantic Kernel agent that interacts with the Azure AI Foundry Agent service.
+- Example 4: Semantic Kernel agent with a SK plugin used by the agent. The agent uses Azure AI Foundry Agent service to generate the answer and access to the plugin. 
 
 ## Contributing
 
