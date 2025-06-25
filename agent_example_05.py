@@ -5,7 +5,6 @@ from azure.identity.aio import DefaultAzureCredential
 from semantic_kernel.agents import AzureAIAgent, AzureAIAgentSettings
 from semantic_kernel.agents import GroupChatOrchestration, RoundRobinGroupChatManager, BooleanResult
 from semantic_kernel.agents.runtime import InProcessRuntime
-from semantic_kernel.agents.strategies import TerminationStrategy
 from semantic_kernel.contents import AuthorRole
 from semantic_kernel.contents import ChatMessageContent
 
