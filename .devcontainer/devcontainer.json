@@ -1,6 +1,29 @@
-
 {
-	"build": {
-		"dockerfile": "Dockerfile"
-}
+    "name": "getting-started-with-ai-foundry-agents",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "features": {
+    },
+    // Add environment variables to the container.
+	"runArgs": [
+		"--env-file",
+		".env"
+	],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "hashicorp.terraform",
+                "ms-vscode.makefile-tools",
+                "davidanson.vscode-markdownlint"
+            ]
+        }
+    },
+    "postCreateCommand": "make setup",
+    "mounts": [
+        "source=profile,target=/root,type=volume",
+        "target=/root/.vscode-server,type=volume"
+    ]
 }

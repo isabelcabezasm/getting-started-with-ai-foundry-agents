@@ -18,7 +18,7 @@ or
 **Install dependencies:**
     - For Python:
       ```bash
-      pip3 install -r requirements.txt
+      make install
       ```
 3. **Modify the .env file**
 The endpoint can be found in the Azure Foundry portal
@@ -30,7 +30,7 @@ For the example 01 and 02 you will need to create a "Grounding with Bing Custom 
 4. **Run or debug your agent:**    
     - Python:
       ```bash
-      python3 agent_example_xx.py
+      uv run agent_example_xx.py
       ```
 
 ## Examples
